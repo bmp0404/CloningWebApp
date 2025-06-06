@@ -1,3 +1,5 @@
+// page.tsx
+
 "use client";
 
 import { useState } from "react";
@@ -11,26 +13,26 @@ export default function Home() {
 
   const handleClone = async () => {
     if (!url) return;
+
     setLoading(true);
     setError(null);
     setHtml(null);
 
     try {
-      const res = await fetch("http://localhost:8000/clone", {
+      const res = await fetch("http://127.0.0.1:8000/clone", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ url }),
       });
-
       if (!res.ok) {
-        const { detail } = await res.json();
-        throw new Error(detail ?? "Clone failed");
+        const body = await res.json();
+        throw new Error(body.detail || "clone failed");
       }
-
       const data = await res.json();
+      console.log("frontend received data.html:", data.html.slice(0, 200) + "...");
       setHtml(data.html);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (e: any) {
+      setError(e.message);
     } finally {
       setLoading(false);
     }
@@ -38,7 +40,7 @@ export default function Home() {
 
   return (
     <div className="grid grid-rows-[auto_1fr_auto] items-center justify-items-center min-h-screen p-8 gap-12 font-[family-name:var(--font-geist-sans)]">
-      {/* ---------- Header ---------- */}
+      {/* Header */}
       <header className="flex flex-col items-center gap-4">
         <Image
           className="dark:invert"
@@ -51,7 +53,7 @@ export default function Home() {
         <h1 className="text-xl font-semibold">Website Cloner</h1>
       </header>
 
-      {/* ---------- Main ---------- */}
+      {/* Main */}
       <main className="w-full max-w-3xl flex flex-col gap-6">
         {/* Input + button */}
         <div className="flex gap-2">
@@ -70,20 +72,21 @@ export default function Home() {
           </button>
         </div>
 
-        {/* Error message */}
-        {error && (
-          <p className="text-red-500 text-sm">{error}</p>
-        )}
+        {/* Error */}
+        {error && <p className="text-red-500 text-sm">{error}</p>}
 
-        {/* Result iframe */}
+        {/* Iframe preview */}
         {html && (
-          <iframe
-            srcDoc={html}
-            className="w-full h-[70vh] border rounded"
-          />
+          <>
+            <p className="text-sm opacity-60">Preview:</p>
+            <iframe
+              srcDoc={html}
+              style={{ width: "100%", height: "70vh", border: "1px solid #ccc" }}
+            />
+          </>
         )}
 
-        {/* Simple placeholder when nothing yet */}
+        {/* Placeholder */}
         {!html && !loading && !error && (
           <p className="text-center text-sm opacity-60">
             Enter a public URL and click <strong>Clone</strong>.
@@ -91,7 +94,7 @@ export default function Home() {
         )}
       </main>
 
-      {/* ---------- Footer ---------- */}
+      {/* Footer */}
       <footer className="text-xs opacity-60 text-center">
         Prototype for Orchids SWE Internship · Built with Next.js & FastAPI
       </footer>
