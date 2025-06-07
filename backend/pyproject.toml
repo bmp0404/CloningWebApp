@@ -9,5 +9,11 @@ dependencies = [
   "playwright>=1.43.0",
   "httpx>=0.27.0",
   "python-dotenv>=1.0.1",
-  "pillow>=10.3.0"
+  "pillow>=10.3.0",
+  "aiofiles (==24.1.0)",
+  "aiohappyeyeballs (==2.4.4)",
+  "aiohttp (==3.11.12)",
+  "aiosignal (==1.3.2)",
+  "altair (==5.5.0)",
+  "annotated-types (==0.7.0)"
 ]

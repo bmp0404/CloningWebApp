@@ -60,7 +60,7 @@ export default function Home() {
           <input
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            placeholder="https://example.com"
+            placeholder="http://example.com"
             className="flex-1 border rounded px-3 py-2 text-sm dark:bg-[#1a1a1a]"
           />
           <button
